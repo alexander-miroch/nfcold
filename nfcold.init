@@ -1,0 +1,59 @@
+#! /bin/sh
+
+# For RedHat and cousins:
+# chkconfig: 2345 40 40
+# description: nfcheck
+# processname: nfcheck
+
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2, or (at your option) any later
+# version. 
+# You should have received a copy of the GNU General Public License (for
+# example COPYING); if not, write to the Free Software Foundation, Inc., 675
+# Mass Ave, Cambridge, MA 02139, USA.
+# This code was originally developed as a Senior Thesis by Michael Cornwell
+# at the Concurrent Systems Laboratory (now part of the Storage Systems
+# Research Center), Jack Baskin School of Engineering, University of
+# California, Santa Cruz. http://ssrc.soe.ucsc.edu/.
+
+
+NFCOL_BIN=/usr/sbin/nfcold
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+
+
+    RETVAL=0
+    prog=nfcold
+
+    
+    case "$1" in
+        start)
+            echo -n $"Starting $prog: "
+	    daemon $NFCOL_BIN $opts
+            echo
+            exit 0
+            ;;
+        stop)
+            echo -n $"Shutting down $prog: "
+            killproc $NFCOL_BIN
+            echo
+            ;;
+        restart)
+            $0 stop
+            $0 start
+            ;;
+        status)
+            status $prog
+            ;;
+        *)
+            echo $"Usage: $0 {start|stop|restart|status}"
+            RETVAL=1
+    esac
+    
+    exit $RETVAL
+
+
